@@ -13,7 +13,8 @@ export interface Commit {
     committer: CommitAuthor;
     message: string;
     date: string;
-  };
+  },
+  repository : string;
 }
 
 export interface Repo {

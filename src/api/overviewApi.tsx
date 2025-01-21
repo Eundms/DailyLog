@@ -1,5 +1,5 @@
 import { GITHUB_API } from './apiEndpoints';
-import axios from './axios';  // axios 인스턴스를 가져옵니다.
+import axios from './axios'; 
 
 // 최근 1년 동안의 커밋을 날짜별로 그룹화하는 함수
 const getCommitsGroupedByDate = async (GITHUB_USERNAME: string) => {
@@ -19,7 +19,11 @@ const getCommitsGroupedByDate = async (GITHUB_USERNAME: string) => {
             until: new Date().toISOString(),
           },
         });
-        return commitsResponse.data; // 각 리포지토리의 커밋 내역
+        // 커밋에 레포지토리 이름 추가
+        return commitsResponse.data.map((commit: any) => ({
+          ...commit,
+          repository: repo.name,
+        }));
       })
     );
 
@@ -30,12 +34,22 @@ const getCommitsGroupedByDate = async (GITHUB_USERNAME: string) => {
       if (!acc[commitDate]) {
         acc[commitDate] = [];
       }
-      acc[commitDate].push(commit);
+      acc[commitDate].push({
+        ...commit,
+        repository: commit.repository, // 레포지토리 이름 포함
+      });
       return acc;
     }, {});
 
-    console.log("Grouped commits by date:", commitsGroupedByDate);
-    return commitsGroupedByDate;
+    // 날짜를 기준으로 역순 정렬
+    const sortedCommitsGroupedByDate = Object.fromEntries(
+      Object.entries(commitsGroupedByDate).sort(([dateA], [dateB]) => {
+        return new Date(dateB).getTime() - new Date(dateA).getTime();
+      })
+    );
+
+    console.log("Grouped commits by date (sorted):", sortedCommitsGroupedByDate);
+    return sortedCommitsGroupedByDate;
   } catch (error) {
     console.error("Error fetching commits:", error);
   }

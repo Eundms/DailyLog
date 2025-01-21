@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import getCommitsGroupedByDate from "../api/overviewApi";
 import { Commit } from "../types/types";
+import "../styles/contributiongroupedbydate.css";
 
 interface IProps {
   username: string;
@@ -16,7 +17,9 @@ const CommitsGroupedByDate: React.FC<IProps> = ({ username }) => {
       try {
         const result = await getCommitsGroupedByDate(username);
         console.log(result);
-        setCommitsByDate(result); // 커밋 데이터 업데이트
+        if (result) { 
+          setCommitsByDate(result);
+        }
       } catch (error: any) {
         setError(error.message || "An unknown error occurred");
       } finally {
@@ -44,15 +47,14 @@ const CommitsGroupedByDate: React.FC<IProps> = ({ username }) => {
         {Object.keys(commitsByDate).map((date) => (
           <li key={date}>
             <h4>{date}</h4>
-            <ul>
+              <div className="log-container">
               {commitsByDate[date].map((commit, index) => (
-                <li key={commit.sha || index}>
-                  <p><strong>Message:</strong> {commit.commit.message}</p>
-                  <p><strong>Author:</strong> {commit.commit.author.name}</p>
-                  <p><strong>Date:</strong> {commit.commit.committer.date}</p>
-                </li>
+                  <div  key={commit.sha || index}>
+                    <div className="log-header">===<span className="repository">committed at : {commit.repository}</span>===</div>
+                    <div className="log-message">[<span className="log-time"></span>] <span className="log-detail">{commit.commit.message}</span></div>
+                  </div>
               ))}
-            </ul>
+            </div>
           </li>
         ))}
       </ul>

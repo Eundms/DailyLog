@@ -1,0 +1,25 @@
+
+.log-container {
+    background-color: #2d2d2d;
+    border: 1px solid #3c3c3c;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+.log-header {
+    color: #61afef;
+    font-weight: bold;
+}
+.log-message {
+    color: #98c379;
+}
+.log-detail {
+    color: #e06c75;
+}
+.log-time {
+    color: #c678dd;
+}
+.repository {
+    color: #56b6c2;
+}

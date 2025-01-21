@@ -15,7 +15,7 @@ const CommitsGroupedByDate: React.FC<IProps> = ({ username }) => {
   useEffect(() => {
     const fetchCommitsGroupedByDate = async (username: string) => {
       try {
-        const result = await getCommitsGroupedByDate(username);
+        const result = (await getCommitsGroupedByDate(username)) as Record<string, Commit[]>;
         console.log(result);
         if (result) { 
           setCommitsByDate(result);
@@ -42,7 +42,7 @@ const CommitsGroupedByDate: React.FC<IProps> = ({ username }) => {
 
   return (
     <div>
-      <h3>Commits Grouped By Date (Last 1 Year)</h3>
+      <h3>Daily Logs</h3>
       <ul>
         {Object.keys(commitsByDate).map((date) => (
           <li key={date}>
@@ -50,8 +50,8 @@ const CommitsGroupedByDate: React.FC<IProps> = ({ username }) => {
               <div className="log-container">
               {commitsByDate[date].map((commit, index) => (
                   <div  key={commit.sha || index}>
-                    <div className="log-header">===<span className="repository">committed at : {commit.repository}</span>===</div>
-                    <div className="log-message">[<span className="log-time"></span>] <span className="log-detail">{commit.commit.message}</span></div>
+                    <div ><span className="log-time"> </span><span className="repository"> {commit.repository}</span></div>
+                    <div className="log-message"><span className="log-time"> Message :</span> <span className="log-detail">{commit.commit.message}</span></div>
                   </div>
               ))}
             </div>

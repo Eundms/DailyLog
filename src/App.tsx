@@ -1,5 +1,5 @@
 import React from "react";
-
+import "./index.css"
 import CommitsGroupedByDate from "./components/ContributionGroupedByDate";
 import CommitGraph from "./components/CommitGraph";
 
